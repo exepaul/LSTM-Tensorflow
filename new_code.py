@@ -1,5 +1,5 @@
 import tensorflow as tf
-
+import numpy as np
 from tensorflow.contrib import rnn
 
 vocab_ = {'\xa0': 60, 'S': 26, 'W': 30, 'É': 62, 'Á': 61, 'ò': 75, 'ê': 71, 'õ': 77, 'ñ': 74, 'J': 17, 'o': 48, ',': 3, "'": 2, 'g': 40, 'Q': 24, 'ż': 87, 'B': 9, 'ç': 68, 'O': 22, 'N': 21, 'D': 11, 'd': 37, 'x': 57, 'q': 50, 'L': 19, 'z': 59, 'U': 28, 'F': 13, 'w': 56, 't': 53, 'h': 41, 'j': 43, '1': 6, 'r': 51, 'e': 38, 'K': 18, 'k': 44, 'ú': 80, 'a': 34, 'ü': 81, 'é': 70, 'I': 16, 'Y': 32, 'ì': 72, 'ó': 76, 'A': 8, 'c': 36, 'E': 12, 'i': 42, 'G': 14, 'à': 64, 'y': 58, 'V': 29, 'C': 10, 'X': 31, 'ä': 67, '0': 0, 'b': 35, 's': 52, '/': 5, 'n': 47, 'p': 49, 'ö': 78, 'ą': 82, ' ': 1, 'Ż': 86, 'l': 45, 'á': 65, 'ù': 79, ':': 7, 'u': 54, 'Z': 33, 'è': 69, 'Ś': 85, 'm': 46, '-': 4, 'ł': 83, 'T': 27, 'P': 23, 'ń': 84, 'R': 25, 'í': 73, 'ã': 66, 'ß': 63, 'v': 55, 'M': 20, 'H': 15, 'f': 39}
@@ -75,7 +75,7 @@ with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
 
     for i in range(2):
-        for j in range(1000):
+        for j in range(10):
             first,second,third,forth,fifth,_=sess.run([loss,prob,pred,final_result,acc,train],feed_dict={input_x:data_pad,output_y:labels_x})
 
 
@@ -83,5 +83,11 @@ with tf.Session() as sess:
             print("{} Iteration {} epoch {} loss {} accuracy".format(j,i,first,fifth))
 
 
+with tf.Session() as sess:
+    sess.run(tf.global_variables_initializer())
 
+    first1, second1, third1= sess.run([prob, pred, model],
+                                                     feed_dict={input_x: [[18, 41, 48, 54, 51, 58, 0, 0]]})
 
+    dataew=np.array(first1[0]).tolist()
+    print(sorted([(i, j) for i, j in enumerate(dataew)], key=lambda x: x[1], reverse=True))
